@@ -18,7 +18,7 @@ class App extends React.Component{
     const url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_MYKEY}&q=${this.state.citySearch}&format=json`;
     const location = await axios.get(url).catch(function(error){
       if(error.response){
-        console.log(error.response.data);
+        // console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
       }else if (error.request){
