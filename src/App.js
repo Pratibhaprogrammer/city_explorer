@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import superagent from 'superagent';
 import Card from 'react-bootstrap/Card'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Forcast from './forcast.js';
@@ -23,7 +23,7 @@ class App extends React.Component {
 
   }
   //async tells the code that what we are trying to produce will take time. await makes the code stop until we have what we need.  
-  //axios is the library being used. its a very clean way for us to use http methods. it is the tool that goes to the website and packages the data up for us to use. 
+  //superagent is the library being used. its a very clean way for us to use http methods. it is the tool that goes to the website and packages the data up for us to use. 
 
   //await and async must be used inconjunctio or neither will work. but we are passing and event into this function as a parameter
   LocationInfo = async (e) => {
@@ -34,8 +34,8 @@ class App extends React.Component {
       //Try/catch is like an if else statement.
       //key= my private api token, q= (query) we are using state.citySearch so that the user can search for more than one city.  The state changes
       const url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_MYKEY}&q=${this.state.citySearch}&format=json`;
-      const location = await axios.get(url);//if we don't have this then line 37(location.data)will be undefined.
-      const locationArray = location.data;//data is coming from axios.  we are leaveraging it with location. (kind of attatching)
+      const location = await superagent.get(url);//if we don't have this then line 37(location.data)will be undefined.
+      const locationArray = location.body;//data is coming from superagent.  we are leaveraging it with location. (kind of attatching)
       this.setState({
         location: locationArray[0],//we are giving location an object from an index of location array. (location array has many indecies)
         displayResults: true, //hey, go ahead and show that stuff
@@ -69,7 +69,8 @@ class App extends React.Component {
               <Card.Text>
                 {this.state.location.lon}
               </Card.Text>
-              <Forcast></Forcast>
+              <Forcast location = {this.state.location}>
+              </Forcast>
             </Card.Body>
           </Card>
 
